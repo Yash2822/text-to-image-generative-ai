@@ -1,0 +1,25 @@
+# Corepi
+numpy>=1.24
+pandas>=2.0
+
+# Config
+pyyaml>=6.0
+
+# Hugging Face (Task 2 onward: tokenization, embeddings, diffusers)
+transformers>=4.35
+diffusers>=0.25
+accelerate>=0.25
+
+# Data / visualization (Task 1: dataset analysis)
+matplotlib>=3.7
+pillow>=10.0
+datasets>=2.15
+
+# Experiment tracking (introduced at Task 3)
+wandb>=0.16
+
+# Application UI
+gradio>=4.0
+
+# Dev / testing
+pytest>=7.4

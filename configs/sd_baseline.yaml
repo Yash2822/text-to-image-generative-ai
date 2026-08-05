@@ -1,0 +1,16 @@
+# Baseline pretrained Stable Diffusion inference config.
+# This does not train anything — it configures the provided/baseline
+# generator (src/inference/diffusion_pipeline.py) and the Gradio app.
+
+experiment_name: sd_baseline
+
+inference:
+  pretrained_model_id: runwayml/stable-diffusion-v1-5
+  device: auto            # auto | cuda | cpu
+  default_scheduler: euler_a
+  output_dir: outputs
+
+tracking:
+  enabled: false
+  project_name: text-to-image-internship
+  run_name: null

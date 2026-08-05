@@ -1,0 +1,44 @@
+# Virtual environments
+venv/
+.venv/
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+*.egg-info/
+build/
+dist/
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Environment / secrets
+.env
+.env.*
+*.key
+
+# ML data
+data/raw/*
+data/processed/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+
+# Generated outputs
+outputs/*
+!outputs/.gitkeep
+
+# Experiments and checkpoints
+experiments/*
+!experiments/.gitkeep
+*.ckpt
+*.pth
+*.pt
+*.safetensors
+
+# Hugging Face / model caches
+.cache/
+huggingface/

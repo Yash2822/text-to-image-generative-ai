@@ -1,0 +1,35 @@
+# Base experiment config. Copy this file per experiment (e.g. cgan_baseline.yaml,
+# cgan_attention.yaml, diffusion_finetune.yaml) and override only what changes.
+# Every key here maps directly to a field in src/utils/config.py — if you add a
+# key that doesn't exist there yet, load_config() will raise an error rather
+# than silently ignoring it.
+
+experiment_name: base_example
+
+data:
+  dataset_name: oxford-102-flowers
+  raw_dir: data/raw
+  processed_dir: data/processed
+  image_size: 64
+  batch_size: 32
+  num_workers: 4
+
+model:
+  name: cgan_baseline
+  latent_dim: 100
+  embedding_dim: 256
+  num_classes: 102
+
+training:
+  epochs: 50
+  learning_rate: 0.0002
+  beta1: 0.5
+  beta2: 0.999
+  seed: 42
+  checkpoint_dir: experiments
+  log_every_n_steps: 50
+
+tracking:
+  enabled: false   # set true starting at Task 3, when real training begins
+  project_name: text-to-image-internship
+  run_name: null
