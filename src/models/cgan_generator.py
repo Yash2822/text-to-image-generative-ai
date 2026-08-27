@@ -16,21 +16,28 @@ class CGANGenerator(nn.Module):
         super().__init__()
 
         self.latent_dim = latent_dim
+        self.noise_dim = latent_dim
         self.num_classes = num_classes
         self.embedding_dim = embedding_dim
+
         self.label_embedding = nn.Embedding(
             num_embeddings=num_classes,
             embedding_dim=embedding_dim,
         )
+
         self.project = nn.Sequential(
-            nn.Linear(latent_dim + embedding_dim, 256 * 4 * 4),
-            nn.BatchNorm1d(256 * 4 * 4),
+            nn.Linear(
+                latent_dim + embedding_dim,
+                256 * 4 * 4,
+            ),
+            nn.LayerNorm(256 * 4 * 4),
             nn.ReLU(inplace=True),
         )
 
         self.generator = nn.Sequential(
             nn.ConvTranspose2d(
-                256, 128,
+                256,
+                128,
                 kernel_size=4,
                 stride=2,
                 padding=1,
@@ -39,7 +46,8 @@ class CGANGenerator(nn.Module):
             nn.ReLU(inplace=True),
 
             nn.ConvTranspose2d(
-                128, 64,
+                128,
+                64,
                 kernel_size=4,
                 stride=2,
                 padding=1,
@@ -48,7 +56,8 @@ class CGANGenerator(nn.Module):
             nn.ReLU(inplace=True),
 
             nn.ConvTranspose2d(
-                64, 32,
+                64,
+                32,
                 kernel_size=4,
                 stride=2,
                 padding=1,
@@ -57,14 +66,15 @@ class CGANGenerator(nn.Module):
             nn.ReLU(inplace=True),
 
             nn.ConvTranspose2d(
-                32, 1,
+                32,
+                1,
                 kernel_size=4,
                 stride=2,
                 padding=1,
             ),
             nn.Sigmoid(),
         )
-        
+
     def forward(
         self,
         noise: torch.Tensor,
@@ -72,7 +82,9 @@ class CGANGenerator(nn.Module):
     ) -> torch.Tensor:
         """Generate 64x64 grayscale images conditioned on class labels."""
 
-        label_embeddings = self.label_embedding(labels)
+        label_embeddings = self.label_embedding(
+            labels.long()
+        )
 
         generator_input = torch.cat(
             [noise, label_embeddings],
