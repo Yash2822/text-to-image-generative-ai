@@ -69,8 +69,8 @@ def main() -> None:
             "Number of samples: "
             f"{metrics['num_real_samples']}"
         )
-        print()
 
+        print()
         print("Generated samples")
         print(
             "Mean pixel intensity: "
@@ -84,9 +84,9 @@ def main() -> None:
             "Number of samples: "
             f"{metrics['num_generated_samples']}"
         )
-        print()
 
-        print("Difference")
+        print()
+        print("Pixel metric differences")
         print(
             "Mean intensity difference: "
             f"{metrics['mean_pixel_intensity_difference']:.4f}"
@@ -95,6 +95,49 @@ def main() -> None:
             "Std intensity difference: "
             f"{metrics['std_pixel_intensity_difference']:.4f}"
         )
+
+        print()
+        print("Shape-aware metrics")
+
+        print(
+            "Real foreground area ratio: "
+            f"{metrics['real_foreground_area_ratio']:.4f}"
+        )
+        print(
+            "Generated foreground area ratio: "
+            f"{metrics['generated_foreground_area_ratio']:.4f}"
+        )
+        print(
+            "Foreground area ratio difference: "
+            f"{metrics['foreground_area_ratio_difference']:.4f}"
+        )
+
+        print(
+            "Real bounding box aspect ratio: "
+            f"{metrics['real_bounding_box_aspect_ratio']:.4f}"
+        )
+        print(
+            "Generated bounding box aspect ratio: "
+            f"{metrics['generated_bounding_box_aspect_ratio']:.4f}"
+        )
+        print(
+            "Bounding box aspect ratio difference: "
+            f"{metrics['bounding_box_aspect_ratio_difference']:.4f}"
+        )
+
+        print(
+            "Real compactness: "
+            f"{metrics['real_compactness']:.4f}"
+        )
+        print(
+            "Generated compactness: "
+            f"{metrics['generated_compactness']:.4f}"
+    )
+        print(
+            "Compactness difference: "
+            f"{metrics['compactness_difference']:.4f}"
+        )
+
         print()
         print("-" * 40)
         print()
