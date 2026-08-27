@@ -9,9 +9,17 @@ from src.models.cgan_generator import CGANGenerator
 
 
 def main() -> None:
+    seed = 42
+
+    torch.manual_seed(seed)
+
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed_all(seed)
+
     device = "cuda" if torch.cuda.is_available() else "cpu"
 
     checkpoint_path = Path("checkpoints/cgan_shapes.pt")
+
     output_dir = Path("outputs")
     output_dir.mkdir(exist_ok=True)
 
@@ -33,7 +41,8 @@ def main() -> None:
     generator.eval()
 
     class_names = checkpoint["class_names"]
-    samples_per_class = 5
+
+    samples_per_class = 10
 
     labels = torch.arange(
         checkpoint["num_classes"]
@@ -60,7 +69,7 @@ def main() -> None:
     figure, axes = plt.subplots(
         num_classes,
         samples_per_class,
-        figsize=(10, 6),
+        figsize=(15, 6),
     )
 
     for class_index in range(num_classes):
@@ -70,7 +79,10 @@ def main() -> None:
                 + sample_index
             )
 
-            axis = axes[class_index, sample_index]
+            axis = axes[
+                class_index,
+                sample_index,
+            ]
 
             axis.imshow(
                 generated_images[
@@ -85,9 +97,11 @@ def main() -> None:
             axis.axis("off")
 
             if sample_index == 0:
-                axis.set_title(
+                axis.set_ylabel(
                     class_names[class_index],
-                    loc="left",
+                    rotation=0,
+                    labelpad=40,
+                    va="center",
                 )
 
     figure.suptitle(
@@ -112,6 +126,8 @@ def main() -> None:
     print("=== CGAN SAMPLE GENERATION ===")
     print(f"Device: {device}")
     print(f"Checkpoint: {checkpoint_path}")
+    print(f"Random seed: {seed}")
+    print(f"Samples per class: {samples_per_class}")
     print(f"Generated samples: {len(labels)}")
     print(f"Output saved to: {output_path}")
 
