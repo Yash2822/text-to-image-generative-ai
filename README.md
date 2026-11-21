@@ -1,6 +1,6 @@
 # Text-to-Image Generation: From CGAN to Fine-Tuned Diffusion
 
-**Status:** 🚧 Scaffolding stage — core pipeline in progress.
+**Status:**  Scaffolding stage — core pipeline in progress.
 
 An end-to-end generative vision-language project that builds up a
 text-to-image system in stages: dataset analysis, text embeddings, a
@@ -23,10 +23,10 @@ diffusion pipeline.
 
 | Stage | Description | Status |
 |---|---|---|
-| 1 | Dataset analysis (COCO / Oxford-102 Flowers) | ⬜ Not started |
-| 2 | Text preprocessing — tokenization & embeddings (Hugging Face) | ⬜ Not started |
-| 3 | Conditional GAN (label/text-conditioned generation) | ⬜ Not started |
-| 4 | Attention-augmented GAN (self-/cross-attention) | ⬜ Not started |
+| 1 | Dataset analysis (COCO / Oxford-102 Flowers) | Successfully Implemented |
+| 2 | Text preprocessing — tokenization & embeddings (Hugging Face) | Successfully Implemented |
+| 3 | Conditional GAN (label/text-conditioned generation) | Successfully Implemented |
+| 4 | Attention-augmented GAN (self-/cross-attention) | In working |
 | 5 | Fine-tuning a pretrained diffusion model (LoRA / DreamBooth) | ⬜ Not started |
 | 6 | End-to-end pipeline: text → tokenizer → embedding → generator → image | ⬜ Not started |
 
