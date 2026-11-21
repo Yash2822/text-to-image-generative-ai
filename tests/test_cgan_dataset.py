@@ -4,82 +4,45 @@ import torch
 from src.data.cgan_dataset import CGANShapeDataset
 
 
-def test_dataset_length() -> None:
-    dataset = CGANShapeDataset(
-        num_samples_per_class=10,
-    )
-
+def test_dataset_length_and_classes() -> None:
+    dataset = CGANShapeDataset(num_samples_per_class=10)
     assert len(dataset) == 30
-
-
-def test_number_of_classes() -> None:
-    dataset = CGANShapeDataset()
-
     assert dataset.num_classes == 3
-    assert dataset.CLASS_NAMES == (
-        "circle",
-        "square",
-        "triangle",
-    )
+    assert dataset.CLASS_NAMES == ("circle", "square", "triangle")
 
 
-def test_sample_image_shape() -> None:
-    dataset = CGANShapeDataset(
-        num_samples_per_class=1,
-        image_size=64,
-    )
-
-    image, label = dataset[0]
-
+def test_sample_image_shape_and_range() -> None:
+    image, label = CGANShapeDataset(num_samples_per_class=1)[0]
     assert image.shape == (1, 64, 64)
     assert image.dtype == torch.float32
-    assert label == 0
+    assert 0 <= label < 3
+    assert image.min() >= 0 and image.max() <= 1
 
 
-def test_labels_are_valid() -> None:
-    dataset = CGANShapeDataset(
-        num_samples_per_class=5,
-    )
-
-    labels = [
-        dataset[index][1]
-        for index in range(len(dataset))
-    ]
-
-    assert set(labels) == {0, 1, 2}
-
-
-def test_invalid_num_samples_raises_error() -> None:
+def test_invalid_dataset_parameters_raise() -> None:
     with pytest.raises(ValueError):
-        CGANShapeDataset(
-            num_samples_per_class=0,
-        )
-
-
-def test_small_image_size_raises_error() -> None:
+        CGANShapeDataset(num_samples_per_class=0)
     with pytest.raises(ValueError):
-        CGANShapeDataset(
-            image_size=8,
-        )
+        CGANShapeDataset(image_size=8)
 
 
 def test_same_seed_is_reproducible() -> None:
-    dataset_a = CGANShapeDataset(
-        num_samples_per_class=2,
-        seed=42,
-    )
+    a = CGANShapeDataset(num_samples_per_class=5, seed=42)
+    b = CGANShapeDataset(num_samples_per_class=5, seed=42)
+    assert torch.equal(a.images, b.images)
+    assert torch.equal(a.labels, b.labels)
 
-    dataset_b = CGANShapeDataset(
-        num_samples_per_class=2,
-        seed=42,
-    )
 
-    assert torch.equal(
-        dataset_a.images,
-        dataset_b.images,
-    )
+def test_different_seeds_produce_different_datasets() -> None:
+    a = CGANShapeDataset(num_samples_per_class=5, seed=42)
+    b = CGANShapeDataset(num_samples_per_class=5, seed=43)
+    assert not torch.equal(a.images, b.images)
 
-    assert torch.equal(
-        dataset_a.labels,
-        dataset_b.labels,
-    )
+
+def test_samples_within_each_class_have_diversity() -> None:
+    dataset = CGANShapeDataset(num_samples_per_class=12, seed=42)
+    for class_index in range(dataset.num_classes):
+        class_images = dataset.images[
+            dataset.labels == class_index
+        ]
+        assert torch.unique(class_images.flatten(1), dim=0).shape[0] > 1
