@@ -57,7 +57,7 @@ class CGANEvaluator:
 
             # Four-neighbour perimeter, computed with tensor operations.
             padded = torch.nn.functional.pad(
-                mask.to(torch.float32)[None, None], (1, 1, 1, 1)
+                mask[None, None], (1, 1, 1, 1)
             )[0, 0]
             perimeter = (
                 (mask & ~padded[:-2, 1:-1]).sum()
